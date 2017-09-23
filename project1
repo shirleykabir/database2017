@@ -1,0 +1,24 @@
+SELECT S.name FROM Songs S, Albums A WHERE S.album_id = A.album_id AND A.genre='Pop Punk';
+
+
+//
+
+SELECT Count(*) FROM Albums A, Songs S WHERE S.album_id = A.album_id AND A.release_date < '2017-02-18' GROUP BY S.song_id;
+
+
+// Find the number of songs released per artist and per year. The result should contain three
+columns: the artist name, the year, and the number of songs released by the artist that year.
+
+
+
+SELECT R.name, Count(song_id), year(A.release_date) FROM Albums A, Songs S, Artists R WHERE R.artist_id = A.artist_id AND S.album_id = A.album_id GROUP BY year(A.release_date); 
+
+
+LOAD DATA LOCAL INFILE '/Users/shirleykabir/Desktop/hw1_release/test/Songs_test.csv' INTO TABLE hw1.Songs FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' ENCLOSED BY '"' (song_id, album_id, name);
+
+LOAD DATA LOCAL INFILE '/Users/shirleykabir/Desktop/hw1_release/test/Albums_test.csv' INTO TABLE hw1.Albums FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n' (artist_id, name, genre, release_date);
+
+CREATE TABLE Songs (song_id INTEGER PRIMARY KEY,
+album_id INTEGER NOT NULL,
+name VARCHAR(50) NOT NULL,
+FOREIGN KEY (album_id) REFERENCES Albums(album_id));
